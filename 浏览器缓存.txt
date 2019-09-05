@@ -17,3 +17,5 @@
       - cookie会被附加在每次的 http 请求中，无形中增加了流量。
       - 由于在 http 请求中的 cookie 是明文传递的，所以安全性成问题。(除非使用HTTPs)
       - Cookie的大小限制在4kb左右，对于复杂的存储需求是不够的。
+      
+拓展阅读: https://juejin.im/post/5c22ee806fb9a049fb43b2c5?utm_source=gold_browser_extension
