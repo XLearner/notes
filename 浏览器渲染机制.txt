@@ -34,3 +34,5 @@
 
 Reflow --- 页面重画，重新构成 Render Tree和 Layout Tree。
 Repaint --- 改变颜色，不改变布局。元素的几何尺寸没有改变。
+
+参考： https://www.jianshu.com/p/05eb1b17b298
