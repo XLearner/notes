@@ -1,0 +1,59 @@
+day 1
+
+git
+	分支
+	  - master 分支
+	     主枝干，当前使用的生产环境的代码状态，新的代码只能合并进来，而不能commit
+	  - develop 分支
+	     下一个迭代的代码情况，没有确定的代码不能合并至该分支。该分支永远领先或者与master分支齐平。
+	  - 辅助分支
+	     -- feature 分支
+	        各种新功能特性分支
+	     -- hotfix 分支
+	        补丁分支，紧急修复严重bug，合并至master和develop分支
+	     -- release 分支
+	        用于测试的分支，不进行新的代码合并，只做bug修复的合并
+	     -- bugfix 分支
+	        紧急程度亚于hotfix 分支，在下一个版本发布后合并，起源于develope分支且只合并到develop分支，与feature分支相似。
+	     -- support 分支
+	        用于维护老的代码分支。
+	     -- special 分支
+	        特别版本分支，如周年版本，节日版本等。
+
+git 代码
+参考(https://blog.csdn.net/wilanzai/article/details/96426103)
+    - 初始化git仓库
+      git init
+      
+    - 与 origin master建立连接
+      git remote add origin URL
+
+    - 把远程分支拉倒本地
+      git fetch origin dev (拉取的为master的代码，分支代码拉不到)
+
+    - 在本地创建分支并切换至该分支
+      git checkout -b dev(本地分支名) origin/dev(远程分支名称)
+
+    - 将某个分支的内容全部拉取
+      git pull origin dev(远程分支名称)
+
+    - 查看当前分支
+      git branch
+
+    - 选择分支
+      git checkout branch-name
+
+    - 删除分支
+      git branch -d branch-name
+
+    - 合并分支
+      git merge branch-name
+
+    - 添加改动文件到预备区
+      git add [文件名，提交全部为.]
+
+    - 提交改动代码文件
+      git commit -m [description]
+
+    - 查看远端分支目录
+      git branch -r

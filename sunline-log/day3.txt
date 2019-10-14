@@ -1,0 +1,27 @@
+day 3
+
+	git 的本地操作。使用clone命令只能拉取远程master分支，需要拉取其他分支，可使用git pull 或者 git fetch 命令。
+	git 命令行中的对比语法，知道如何对比两个文件，以及对应的vim的操作
+
+	下载项目
+		git clone url
+	拉取
+		git pull origin 分支名
+		此操作等同于 一下四步操作
+			git fetch origin 分支名
+			git merge 分支名
+			git add .
+			git commit
+	在更新时遇到问题：
+		1. 如果是远端更新了
+			git fetch origin 分支名
+			// fetch 之后会返回一条这样的信息(临时存放点？)
+			// * branch     umd   -> FETCH_HEAD
+			git diff 本地对应分支名 FETCH_HEAD //找到改动位置
+			git merge FETCH_HEAD
+		2. 如果是本地更改了，想要重新拉取，在做以上操作的时候，最后一步返回 up to date。此时可以强制重新拉取整个分支，但之前做的其他改动可能也会消失。
+			*git checkout 对应分支
+			*git reset --hard
+			git fetch -all // 或者对应的分支名  origin 分支名
+			git reset --hard origin/分支名
+			git pull

@@ -1,0 +1,21 @@
+浏览器缓存
+
+一、 缓存位置(按优先级排列)
+    1. Service Worker
+      运行在浏览器背后的独立线程。使用该功能，传输协议必须是 https，因为Service worker 涉及到请求拦截，必须用HTTPS保障其安全。
+    2. Memory Cache
+      内存中缓存，主要包括页面中抓取的资源，如图片，样式，脚本等。尽管读取高效，可是存储周期很短，会随着进程的释放而释放。即一旦我们关闭了Tab页面，内存中的缓存就被释放了。
+    3. Disk Cache
+      存储在硬盘中的缓存，读取速度慢，但容量比Memory Cache大得多，且时效性长。Disk Cache会根据 HTTP header 来判断哪些文件需要缓存，哪些资源可以不请求直接使用，哪些资源已过期需要重新请求。及时在跨站点的情况下，也可以使用。
+    4. 网络请求
+      
+    4*. Push Cache
+      是 HTTP / 2 的内容，以上三种都没用到时才会使用。它只在会话(Session)中存在，一旦会话结束就被释放，并且缓存时间也很短，在Chrome中只有5分钟左右，并且其也并非严格执行 http头中的指令。(国内少用)
+
+
+    cookie
+      - cookie会被附加在每次的 http 请求中，无形中增加了流量。
+      - 由于在 http 请求中的 cookie 是明文传递的，所以安全性成问题。(除非使用HTTPs)
+      - Cookie的大小限制在4kb左右，对于复杂的存储需求是不够的。
+      
+拓展阅读: https://juejin.im/post/5c22ee806fb9a049fb43b2c5?utm_source=gold_browser_extension
