@@ -45,8 +45,10 @@ Vuex
 		-- 全局拥有一个State存放数据，当组件要更改State中的数据时，必须通过Mutation进行。
 
 	- props / emit
+		-- 在子组件中设置 props 属性，手动抛出标签属性；在子组件中使用 emit 抛出方法，在父组件中通过绑定该方法实现监控(this.$emit('方法名', 参数列表))。
 
 	- $emit / $on
+		-- 
 
 	- $attrs / $listeners
 
