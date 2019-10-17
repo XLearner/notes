@@ -2,7 +2,7 @@ day 5
 
 ES6语法
 
-	...	- 扩展运算符
+	... - 扩展运算符
 	- 自动展开数组，不需要在使用apply命令转换，如：
 		Math.max(...[2,3,4]);
 		arr1.push(...arr2);
@@ -10,27 +10,31 @@ ES6语法
 
 jQuery $(document).ready(function(){}) / $(function(){}) 和 原生 window.onload 的区别
 
-	-----------------------------------------------------------------
-	|			|								| $(ducument).re  	|
-	|			|	window.onload				|ady(function(){})	|
-	|---------------------------------------------------------------|
-	|加载时机	|页面所有内容加载完(文档和			|在页面Dom结构完		|	
-	|			|图片)							|成后就可执行			|
-	|---------------------------------------------------------------|
-	|执行次数	|只能执行一次，且执行最后			|可执行多次，不会		|
-	|			|一次代码块,之前的会被覆盖			|被覆盖				|
-	|---------------------------------------------------------------|
-	|简写方案	|		无						|$(function(){})	|
-	|-------------------------------------------|-------------------|
-	|举例	|window.onload=function(){alert(1)};|无限制，可多次执行	|
-	|		|window.onload=function(){alert(2)};|				 	|
-	|		|只执行第二行							|					|
-	-----------------------------------------------------------------
+	---------------------------------------------------------------------
+	|           |                               	| $(ducument).re    |
+	|           |   window.onload               	|ady(function(){})  |
+	|-------------------------------------------------------------------|
+	|加载时机   	|页面所有内容加载完(文档和          	|在页面Dom结构完     |   
+	|           |图片)                            	|成后就可执行        	|
+	|-------------------------------------------------------------------|
+	|执行次数   	|只能执行一次，且执行最后           	|可执行多次，不会    	|
+	|           |一次代码块,之前的会被覆盖          	|被覆盖             	|
+	|-------------------------------------------------------------------|
+	|简写方案   	|       无                       	|$(function(){})    |
+	|-----------------------------------------------|-------------------|
+	|举例 		|window.onload=function(){alert(1)};|无限制，可多次执行  	|
+	|       	|window.onload=function(){alert(2)};|                   |
+	|       	|只执行第二行                        |                   |
+	---------------------------------------------------------------------
 
 Vuex
 
 	- state
 	  存放值，组件中调用时使用：this.$store.state.属性名 获取。
+
+	- getters
+	  获取state中的值。在获取值的时候，需要另外对state中的值进行一些格式化时，可使用该对象属性。
+
 	- mutations
 	  存放方法，组件中调用使用： this.$store.commit('方法名', '参数') 或者 this.$store.commit({
 		type: '方法名',
@@ -38,20 +42,99 @@ Vuex
 	  })
 	  系统自动匹配 type 名与方法名。且在 mutations 中，不可以写入异步方法，因为在后期调试时会untrackable 对应的执行时间。
 
+	- actions
+	  存放方法，同时可在此使用“异步操作”，但不在此方法中直接操作state数据，依旧需要通过mutations中方法修改数据。该类型中的方法会自动返回一个Promise对象做异步操作。调用方法：
+	  this.$store.dispatch(methods，params)
+	  ...
+	  actions:{
+		method({commit, state, rootState, rootCommit},params)	
+	  }
+	  
+	- modules
+	  引入外部的Store对象。在组件中可直接调用 this.$store.getters.属性名 获取对应的 state 值，若有重名vuex会报错。
+
+	问题： 使用modules时，如何准确调用对应的方法。
+
 组件间传值的 6 种方法
 [https://juejin.im/post/5cde0b43f265da03867e78d3#heading-7]
-
-	- Vuex
-		-- 全局拥有一个State存放数据，当组件要更改State中的数据时，必须通过Mutation进行。
 
 	- props / emit
 		-- 在子组件中设置 props 属性，手动抛出标签属性；在子组件中使用 emit 抛出方法，在父组件中通过绑定该方法实现监控(this.$emit('方法名', 参数列表))。
 
-	- $emit / $on
-		-- 
+	- $emit / $on (Bus)
+		-- 该方法通过一个空的Vue实例作为第三方事件代理者，通过 $emit 将事件挂载在该实例上，再通过 $on 监听该方法。该方法巧妙而轻便的实现了组件间的通信，包括父子，兄弟，跨级。当项目较大时可选择Vuex
+		例：
+			var Event=new Vue();
+			Event.$emit(事件名,数据);
+			Event.$on(事件名,data => {});
+
+	- Vuex
+		-- 全局拥有一个State存放数据，当组件要更改State中的数据时，必须通过Mutation进行。在Mutation中不可进行异步操作，所有的异步操作(获取或更新数据时)或批量的同步操作需要在Actions中完成，但Actions也不能直接修改State中的数据，还是需要通过Mutation来完成，最后根据State的变化，渲染到试图上。
+
+		-- Vuex 和 LocalStorage
+			Vuex中的数据是不会永久保存起来的，每次刷新之后就会回到最初的状态。想要其一直存在，可拷贝一份存入localStorage中，在刷新之后重新取出来赋值给State
 
 	- $attrs / $listeners
+		-- $attrs 包含了父作用域中，没有在子组件 props 中声明的的特性(class和style除外)。通常配合 inheritAttrs 使用，可关闭自动挂载到组件根元素上没有在props声明的属性。
+
+		-- $listeners 包含了父作用域中的所有非原生事件。
 
 	- provide / inject
+		-- 允许父组件给所有子孙组件注入一个依赖。通过provide提供变量，使用inject注入变量。
+			// A.vue
+			export default {
+				provide: {
+					name: 'name1'
+				}
+			}
+
+			// B.vue
+			export default {
+				inject: ['name'],
+				mounted() {
+					console.log(this.name); // name1
+				}
+			}
+			但是该方式不能实现响应，即当父组件中的provide改变，子组件中的值不会发生改变。实现响应有两种方法：
+			1. 通过传入 祖先组件的实例，即 this，但这种方法会带入多余数据
+			2. 使用 Vue.observable 优化响应式 provide(推荐)
+			例：
+			// parent.vue
+			export default {
+				data() {
+					return {
+						color: 'blue'
+					}
+				},
+				// 方法1
+				provide() {
+					return {
+						theme: this 
+					}
+				},
+				// 方法2
+				provide() {
+					this.theme = Vue.observable({
+						color: 'blue'
+					});
+					return {
+						theme: this.theme
+					}
+				},
+			}
+
+			// son.vue
+			export default {
+				inject: ['color']
+			}
 
 	- $parent / $children
+		-- 该方法需要与 ref 配合使用，可直接通过该对象访问某组件的父组件或者其中的子组件对象。但问题是无法进行跨级或兄弟组件的传值。
+
+	- 总结
+		常见的3类使用场景：
+		-- 父子通信： 父->子 props， 子->父 event($emit); 通过父子链($parent / $children); ref访问父/子组件实例; provide / inject; $attrs / $listeners
+
+		-- 兄弟通信： Bus; Vuex
+
+		-- 跨级通信： Bus; Vuex; provide / inject; $attrs / $listeners;
