@@ -2,6 +2,7 @@ day 6
 10-15
 
 TypeScript 的基本转换
+[官方文档 https://www.tslang.cn/docs/handbook/basic-types.html]
 
 .gitignore 文件
 	在需要忽略某些文件不被添加到git缓存区时，配置该文件。但在配置后，使用 git add . 命令依旧会把需要忽略的文件添加进去，这是因为git的缓存的问题，此时可执行命令 
