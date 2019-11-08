@@ -1,0 +1,25 @@
+day 20 -- 10/30
+
+iView 组件 dataPicker 在验证的时候不能直接配置参数进行验证，需要自定义验证方法。
+	注意： Form表单的 model 对象和表单里各项的字段名要在同一个对象下才能进行组件自带的验证方法，否则获取不到对应的字段值。
+
+在使用组件的时候，$parent 的指向并不合我们预想的一样，iView组件内部已经嵌套了几层，所以不可以直接使用。
+
+
+day 21 -- 10/31
+
+在vue中获取某一 div 块到顶部距离时，使用 Dom 方法 getBoundingClientRect().top 获取。但是在VUE中的这个值时不准确的，亲测偏大，可能是因为在浏览器渲染的时候，有些块元素的高度等没写好，在渲染的初期高度的值产生了些问题，所以直接在 mounted 中获取的时候会偏大，若想获取准确值，可使用setTimeout等待一小段时间后，等渲染完成后再获取，但这时页面会出现闪动。(Bug)
+
+sublime 自定义代码块
+	Tools -> Developer -> new Snippet
+
+switch(表达式) {
+     case n:
+        代码块
+        break;
+     case n:
+        代码块
+        break;
+     default:
+        默认代码块
+} 

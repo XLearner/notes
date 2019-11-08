@@ -1,0 +1,40 @@
+day 10  -- 10/21
+
+
+
+day 13 -- 10/24
+
+今日任务：
+	标签管理页，label manage page 
+	scienceDaily 一篇和前一篇
+	vocabulary and a daily writting.
+
+ 获取变量类型的方法
+	Object.prototype.toString.call(); // [object Array]/[object Object]/[object null] ...
+function getType(data){
+	var type = Object.prototype.toString.call(data);
+	type = type.slice(8, type.length-1);
+	return type;	
+}
+
+function deepCopy(data){
+	var type = getType(data);
+	var obj;
+	if(type === "Object"){
+		obj = {};
+	}else if(type === "Array"){
+		obj = [];
+	}else{
+		return data;
+	}
+	if(type === "Object"){
+		for(var i in data){
+			obj[i] = deepCopy(data[i]);
+		}
+	}else if(type === "Array"){
+		for(var i = 0, len = data.length; i < len; i++){
+			obj[i] = deepCopy(data[i]);
+		}
+	}
+	return obj;
+}
