@@ -1,0 +1,139 @@
+day 32 2019-11-11
+
+// 比较两个对象是否相等
+(function(){
+  let a = {
+    a: 123,
+    b: {
+      a: 123
+    },
+    c: [1,2,3,4,5,6]
+  };
+  let b = {
+    a: 123,
+    b: {
+      a: 123
+    },
+    c: [3,2,1]
+  };
+  console.log(objEqual(a,b));
+  // 获取参数类型
+  function getType(data) {
+    var type = Object.prototype.toString.call(data);
+    type = type.slice(8, type.length - 1);
+    type = type[0].toLocaleLowerCase() + type.slice(1);
+    return type;
+  }
+
+  function objEqual(obj1, obj2){
+    if (getType(obj1) == 'object' && getType(obj2) == 'object') {
+      let o1 = Object.keys(obj1),
+          o2 = Object.keys(obj2);
+      for (let i = 0, len = o1.length; i < len; i++) {
+        if(o2.indexOf(o1[i]) < 0) {
+          return false;
+        }else {
+          if (!objEqual(obj1[o1[i]], obj2[o1[i]])){
+            return false;
+          }
+        }
+      }
+    }else if (getType(obj1) == "array" && getType(obj2) == "array") {
+      if (obj1.length != obj2.length) return false;
+      for (let i = 0, len = obj1.length; i < len; i++) {
+        if(obj2.indexOf(obj1[i]) < 0) {
+          return false;
+        }
+      }
+    }else {
+      if (obj1 != obj2) {
+        return false;
+      }
+    }
+    return true;
+  }
+})()
+
+*** The other methods from the Internet ***
+
+deepEqual = ( x, y ) => {
+// If both x and y are null or undefined and exactly the same
+    if ( x === y ) {
+        return true;
+    }
+
+// If they are not strictly equal, they both need to be Objects
+    if ( ! ( x instanceof Object ) || ! ( y instanceof Object ) ) {
+        return false;
+    }
+
+//They must have the exact same prototype chain,the closest we can do is
+//test the constructor.
+    if ( x.constructor !== y.constructor ) {
+        return false;
+    }
+
+    for ( var p in x ) {
+        //Inherited properties were tested using x.constructor === y.constructor
+        if ( x.hasOwnProperty( p ) ) {
+            // Allows comparing x[ p ] and y[ p ] when set to undefined
+            if ( ! y.hasOwnProperty( p ) ) {
+                return false;
+            }
+
+            // If they have the same strict value or identity then they are equal
+            if ( x[ p ] === y[ p ] ) {
+                continue;
+            }
+
+            // Numbers, Strings, Functions, Booleans must be strictly equal
+            if ( typeof( x[ p ] ) !== "object" ) {
+                return false;
+            }
+
+            // Objects and Arrays must be tested recursively
+            if ( ! Object.equals( x[ p ], y[ p ] ) ) {
+                return false;
+            }
+        }
+    }
+
+    for ( p in y ) {
+        // allows x[ p ] to be set to undefined
+        if ( y.hasOwnProperty( p ) && ! x.hasOwnProperty( p ) ) {
+            return false;
+        }
+    }
+    return true;
+}
+
+-------------------------------------------------------------
+一些位运算的方法
+
+//取整
+parseInt(a,10); //Before
+Math.floor(a); //Before
+a>>0; //Before
+~~a; //After
+a|0; //After
+
+//四舍五入
+Math.round(a); //Before
+a+.5|0; //After
+
+//内置值
+undefined; //Before
+void 0; //After, 快
+0[0]; //After, 略慢
+
+//内置值
+Infinity;
+1/0;
+
+//布尔值短写法
+true; //Before
+!0; //After
+
+//布尔值短写法
+false; //Before
+!1; //After
