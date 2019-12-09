@@ -112,7 +112,7 @@ Vuex
 						theme: this 
 					}
 				},
-				// 方法2
+				// 方法2 此方法需要vue2.6版本以上
 				provide() {
 					this.theme = Vue.observable({
 						color: 'blue'
